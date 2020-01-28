@@ -6,7 +6,7 @@ import collatzpy.tree as ctree
 tree = ctree.CTree()
 tree.collect_from_range(2, 50000)
 
-ctree.save(tree, 'data/trees', 'mytree')
+ctree.save(tree, 'mytree')
 
 import collatzpy.plot as cplot
 

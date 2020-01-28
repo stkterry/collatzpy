@@ -1,11 +1,11 @@
 from matplotlib import pyplot as plt
-import sys, os
 
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+from collatzpy.config import _MPL_STYLES
+PATH_STYLE = f'file://{_MPL_STYLES}/path.mplstyle'
 
 def path_plot(tree, n):
 
-  with plt.style.context(f'file://{THIS_DIR}/styles/path.mplstyle', 'ggplot'):
+  with plt.style.context(PATH_STYLE, 'ggplot'):
     _, ax = plt.subplots()
 
   path = tree.path(n)
@@ -26,7 +26,7 @@ def path_plot(tree, n):
 
 def path_plot_from_list(tree, nList):
 
-  with plt.style.context(f'file://{THIS_DIR}/styles/path.mplstyle', 'ggplot'):
+  with plt.style.context(PATH_STYLE, 'ggplot'):
     _, ax = plt.subplots()
 
   for n in nList:

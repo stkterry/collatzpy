@@ -1,22 +1,17 @@
 import pickle
-import pathlib
-# THIS_DIR = pathlib.Path().absolute()
-import sys, os
 
-print(pathlib.Path().absolute())
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-print(THIS_DIR)
+from collatzpy.config import _DATA_DIR
 
-def save(tree, fpath):
+def save(tree, fname):
 
-  tree_file = open(fpath, 'ab')
+  tree_file = open(f'{_DATA_DIR}/trees/{fname}', 'ab')
   pickle.dump(tree, tree_file)
   tree_file.close()
 
 
-def load(fpath):
+def load(fname):
 
-  tree_file = open(fpath, 'rb')
+  tree_file = open(f'{_DATA_DIR}/trees/{fname}', 'rb')
   tree = pickle.load(tree_file)
   tree_file.close()
 
