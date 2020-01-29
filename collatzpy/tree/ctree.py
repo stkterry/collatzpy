@@ -1,4 +1,21 @@
 from .cnode import CNode
+from itertools import count
+
+class NodeIter:
+  def __init__(self, node):
+    self.current_node = node
+  
+  def __iter__(self):
+    return self
+
+  def __next__(self):
+    if self.current_node.next:
+      self.current_node = self.current_node.next
+      return self.current_node.n
+    else: 
+      raise StopIteration
+      
+
 
 class CTree:
 
@@ -44,16 +61,17 @@ class CTree:
     nlist = [n for n in nlist if n > 1]
     for n in nlist: self.collect(n)
   
+
   def path(self, n):
     if not n in self.refs: return []
 
     node = self.refs[n]
-    plen = node.seqLen + 1
-    path = [0] * (plen)
-    for i in range(plen):
+    path = [0] * (node.seqLen + 1)
+    for i in count():
       path[i] = node.n
       node = node.next
-
+      if not node: break
+    
     return path
 
   def longest_seq(self):
