@@ -7,11 +7,11 @@ from collatzpy.config import (
   _NODE_GRAPH_DOT_DIR
 )
 
-from .helpers import load_json, auto_name, HexColorMap
+from .helpers import load_json, auto_name, HexColorMap, fopen
 attrs = load_json(f'{_GRAPHVIZ_STYLES_DIR}/default.json')
 
 def node_tree(tree, n_list, img_name=None, 
-              write_dot=False):
+              write_dot=False, prog='dot'):
   max_seq = tree.longest_seq()['seqLen']
 
   G = pgv.AGraph()
@@ -40,7 +40,7 @@ def node_tree(tree, n_list, img_name=None,
   for i, j in edges:
     G.add_edge(i, j)
   
-  G.layout(prog='dot')
+  G.layout(prog=prog)
 
   img_name = img_name or auto_name(_NODE_GRAPH_IMG_DIR, '')
   
@@ -48,3 +48,5 @@ def node_tree(tree, n_list, img_name=None,
     G.write(f'{img_name}dot')
 
   G.draw(f'{img_name}png')
+
+  fopen(f'{img_name}png')

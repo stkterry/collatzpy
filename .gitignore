@@ -4,10 +4,7 @@ __pycache__/
 *$py.class
 
 collatzpy/saved_imgs
-temp.py
-test.py
-test2.py
-test_node_graph.py
+nps.py
 images
 
 # C extensions

@@ -1,11 +1,21 @@
 from .cnode import CNode
 from itertools import count
+import numpy as np
 
 class CTree:
 
   def __init__(self):
     self.root = CNode(1)
     self.refs = {1: self.root}
+
+  def __call__(self, n):
+    if n in self.refs:
+      return self.refs[n]
+    else:
+      return None
+  
+  def has(self, n):
+    return n in self.refs
 
   def calc_next(self, n):
     return (n // 2) if (n % 2 == 0) else (3 * n + 1)
@@ -16,7 +26,7 @@ class CTree:
     return node
 
   def collect(self, n):
-    if n in self.refs: return
+    if self.has(n): return
 
     node = self.__add_node(n)
     new_nodes = [node]
@@ -24,8 +34,8 @@ class CTree:
     while True:
       n = self.calc_next(n)
 
-      if n in self.refs:
-        node.next = self.refs[n]
+      if self.has(n):
+        node.next = self(n)
 
         seqLen = node.next.seqLen
         l = len(new_nodes)
@@ -50,7 +60,7 @@ class CTree:
     if not n in self.refs: return []
 
     node = self.refs[n]
-    path = [0] * (node.seqLen + 1)
+    path = [None] * (node.seqLen + 1)
     for i in count():
       path[i] = node.n
       node = node.next

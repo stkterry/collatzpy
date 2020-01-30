@@ -2,9 +2,8 @@ from matplotlib import pyplot as plt, cm
 from matplotlib.collections import LineCollection as LC
 import numpy as np
 from random import uniform
-from time import localtime, strftime
 
-from .helpers.size_fix import set_size
+from .helpers import set_size, auto_name
 from collatzpy.config import _IMG_DIR
 
 def angle_plot(tree, selection, a1=0.3, a2=0.38, af=1.08,
@@ -30,7 +29,6 @@ def angle_plot(tree, selection, a1=0.3, a2=0.38, af=1.08,
     theta = np.cumsum(theta)
     xy = np.array([rho * np.cos(theta), 
                    rho * np.sin(theta)])
-
     xy = np.cumsum(xy, 1)
 
   
@@ -58,9 +56,8 @@ def angle_plot(tree, selection, a1=0.3, a2=0.38, af=1.08,
     #   'plotArgs': {'dpi': dpi, 'facecolor': facecolor, 'pxw': pxw, 'pxh': pxh},
     # }
 
-    if not output_name:
-      current_time = strftime("%Y-%m-%d %H:%M:%S", localtime())
-      output_name = f'{_IMG_DIR}/{current_time}.png'
+    output_name = output_name or auto_name(_IMG_DIR, 'png')
+ 
     plt.savefig(output_name, facecolor=facecolor,
                 bbox_inches="tight")
 
