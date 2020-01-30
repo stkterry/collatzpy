@@ -1,5 +1,4 @@
 import pygraphviz as pgv
-from matplotlib import cm
 from math import floor
 
 from collatzpy.config import (
@@ -8,42 +7,21 @@ from collatzpy.config import (
   _NODE_GRAPH_DOT_DIR
 )
 
-from .helpers import load_json, auto_name
+from .helpers import load_json, auto_name, HexColorMap
 attrs = load_json(f'{_GRAPHVIZ_STYLES_DIR}/default.json')
-
-class rgbaMap():
-  def __init__(self, cmap):
-    self.cm = {0: None}
-    self.__convert_cmap_to_rgba(cmap)
-
-  def __convert_cmap_to_rgba(self, cmap):
-    for i in range(0, 1024):
-      rgba = (floor(x*255) for x in cmap(i/1023))
-      self.cm[i] = "#{:02x}{:02x}{:02x}{:02x}".format(*rgba)
-    
-
-  def cmap(self, val):
-    idx = floor(val * 1023)
-    if idx in self.cm:
-      return self.cm[idx]
-    else:
-      raise AttributeError("Wrong")
-
 
 def node_tree(tree, n_list, img_name=None, 
               write_dot=False):
   max_seq = tree.longest_seq()['seqLen']
 
   G = pgv.AGraph()
-  # for attr, val in attrs.graph_attr.items():
-  #   G.graph_attr[attr] = val
-  # for attr, val in attrs.node_attr.items():
-  #   G.node_attr[attr] = val
-  # for attr, val in attrs.edge_attr.items():
-  #   G.edge_attr[attr] = val
+  G.graph_attr.update(**attrs['graph_attr'])
+  G.node_attr.update(**attrs['node_attr'])
+  G.edge_attr.update(**attrs['edge_attr'])
 
-  cmap = rgbaMap(cm.get_cmap('cool'))
-  G.add_node(1, fillcolor=cmap.cmap(0))
+  cmap = HexColorMap('cool')
+
+  G.add_node(1, fillcolor=cmap(0))
   seen = {1}
   edges = []
 
@@ -55,7 +33,7 @@ def node_tree(tree, n_list, img_name=None,
         break
       else:
         seen.add(n)
-        G.add_node(n, fillcolor=cmap.cmap(node.seqLen/max_seq))
+        G.add_node(n, fillcolor=cmap(node.seqLen/max_seq))
         edges.append((n, node.next.n))
         node = node.next
   
@@ -70,5 +48,3 @@ def node_tree(tree, n_list, img_name=None,
     G.write(f'{img_name}dot')
 
   G.draw(f'{img_name}png')
-  
-
