@@ -6,6 +6,8 @@ __pycache__/
 collatzpy/saved_imgs
 temp.py
 test.py
+test2.py
+test_node_graph.py
 
 # C extensions
 *.so

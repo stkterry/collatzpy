@@ -1,22 +1,6 @@
 from .cnode import CNode
 from itertools import count
 
-class NodeIter:
-  def __init__(self, node):
-    self.current_node = node
-  
-  def __iter__(self):
-    return self
-
-  def __next__(self):
-    if self.current_node.next:
-      self.current_node = self.current_node.next
-      return self.current_node.n
-    else: 
-      raise StopIteration
-      
-
-
 class CTree:
 
   def __init__(self):

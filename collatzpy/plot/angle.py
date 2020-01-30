@@ -1,13 +1,11 @@
 from matplotlib import pyplot as plt, cm
 from matplotlib.collections import LineCollection as LC
 import numpy as np
-import random
-rand_uni = random.uniform
+from random import uniform
 from time import localtime, strftime
 
-from .size_fix import set_size
+from .helpers.size_fix import set_size
 from collatzpy.config import _IMG_DIR
-
 
 def angle_plot(tree, selection, a1=0.3, a2=0.38, af=1.08,
                e=1.3, cmName='plasma_r', cmR=(0, 1), pointed=False,
@@ -37,7 +35,7 @@ def angle_plot(tree, selection, a1=0.3, a2=0.38, af=1.08,
 
   
     lmax = 6*(nMax - n) / nMax
-    color = cmap(rand_uni(*cmR))
+    color = cmap(uniform(*cmR))
     alpha = 0.5*((n / nMax)**3)
 
     if pointed:

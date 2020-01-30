@@ -1,7 +1,8 @@
 from matplotlib import pyplot as plt
 
-from collatzpy.config import _MPL_STYLES
-PATH_STYLE = f'file://{_MPL_STYLES}/path.mplstyle'
+from collatzpy.config import _MPL_STYLES_DIR
+PATH_STYLE = f'file://{_MPL_STYLES_DIR}/path.mplstyle'
+
 
 def path_plot(tree, n):
 
