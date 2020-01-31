@@ -2,7 +2,20 @@
 
 """The setup script."""
 
+
 from setuptools import setup, find_packages
+# from setuptools.command.install import install
+# import os, platform
+
+# def __get_fpath():
+#     if platform.system() == 'Windows':
+#         path = R'C:\Users\$USERNAME\Documents\collatzpy'
+#     else:
+#         path = '~/Documents/collatzpy'
+
+#     return os.path.expanduser(path)
+
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -10,7 +23,12 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', ]
+requirements = [
+    'Click>=7.0',
+    'numpy',
+    'matplotlib',
+    'pygraphviz'
+    ]
 
 setup_requirements = [ ]
 
@@ -50,4 +68,7 @@ setup(
     url='https://github.com/stkterry/collatzpy',
     version='0.1.0',
     zip_safe=False,
+    data_files=[
+
+    ]
 )

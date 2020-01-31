@@ -1,3 +1,3 @@
-from .path import path_plot, path_plot_from_list
-from .angle import angle_plot 
-from .node_tree import node_tree
+from .path import path, path_from_list
+from .angle_path import angle_path 
+from .node_graph import node_graph 

@@ -4,8 +4,10 @@
     "ranksep": 0,
     "nodesep": 0.05,
     "bgcolor": "black",
-    "size": "100,100",
-    "dpi": 300
+    "size": "16,10!",
+    "dpi": 300,
+    "overlap": "compress",
+    "len": 0.1
   },
   "node_attr": {
     "shape": "circle",

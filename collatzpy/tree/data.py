@@ -1,18 +1,16 @@
-import pickle
+import pickle, dill
 
-from collatzpy.config import _DATA_DIR
-
-def save(tree, fname):
-
-  tree_file = open(f'{_DATA_DIR}/trees/{fname}', 'ab')
-  pickle.dump(tree, tree_file)
+def save_tree(tree, fpath, fname):
+  
+  tree_file = open(fname, 'ab')
+  dill.dump(tree, tree_file)
   tree_file.close()
 
 
-def load(fname):
+def load_tree(fpath, fname):
 
-  tree_file = open(f'{_DATA_DIR}/trees/{fname}', 'rb')
-  tree = pickle.load(tree_file)
+  tree_file = open(fname, 'rb')
+  tree = dill.load(tree_file)
   tree_file.close()
 
   return tree
