@@ -11,17 +11,18 @@ def path(tree, n, save=False, output_name=None):
     _, ax = plt.subplots()
 
   path = tree.path(n)
-  pathIdx = [x for x in range(1, len(path)+1)]
+  seq_len = tree(n).seq_len
+  pathIdx = [x for x in range(0, seq_len+1)]
 
   plt.plot(pathIdx, path)
   plt.fill_between(pathIdx, path, alpha=0.2)
 
   ax.grid(which="minor", linestyle="--", color='#f2f2f2')
-  plt.xlim([0, len(path)+1])
+  plt.xlim([0, seq_len])
   plt.ylim(bottom=2)
   plt.xlabel("Sequence Step")
   plt.ylabel("Integer Result")
-  plt.title(f"N: {n}, Seq Length: {len(path)}")
+  plt.title(f"N: {n}, Seq Length: {seq_len}")
 
   if save or output_name:
     output_name = output_name or auto_name('png')
@@ -30,19 +31,19 @@ def path(tree, n, save=False, output_name=None):
   plt.show()
 
 
-def path_from_list(tree, nList, save=False, output_name=None):
+def path_from_list(tree, n_list, save=False, output_name=None):
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
     _, ax = plt.subplots()
 
-  for n in nList:
+  for n in n_list:
     path = tree.path(n)
-    path_idx = [x for x in range(1, len(path)+1)]
+    seq_len = tree(n).seq_len
+    path_idx = [x for x in range(0, seq_len + 1)]
 
     path.reverse()
-    plt.plot(path_idx, path, label=f"{n}, {tree(n).seq_len}")
-    plt.fill_between(path_idx, path, alpha=0.2)
-
+    plt.plot(path_idx, path, label=f"{n}, {seq_len}")
+    plt.fill_between(path_idx, path, alpha=0.1)
 
   ax.grid(which="minor", linestyle="--", color='#f2f2f2')
   plt.legend(loc="upper left", title="N, Seq Len")

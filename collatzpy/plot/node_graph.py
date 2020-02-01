@@ -10,8 +10,8 @@ from .plot_helpers import auto_name, HexColorMap, fopen, set_size
 attrs = load_json(_GRAPHVIZ_STYLES_DIR, 'default.json') 
 
 
-def node_graph(tree, n_list, img_name=None, 
-              write_dot=False, prog='dot', graph_attr=None):
+def node_graph(tree, n_list, img_name=None, dot_name=None, write_dot=False, 
+               prog='dot', show=True, graph_attr=None):
   max_seq = tree.best()['seq_len']
 
   G = pgv.AGraph()
@@ -43,23 +43,28 @@ def node_graph(tree, n_list, img_name=None,
   
   G.layout(prog=prog)
 
-  img_name = img_name or auto_name('')
+  img_name = img_name or auto_name('png')
   
-  if write_dot:
-    G.write(f'{img_name}dot')
+  if write_dot or dot_name:
+    dot_name = dot_name or f'{img_name[:-4]}.dot'
+    G.write(dot_name)
 
-  G.draw(f'{img_name}png')
-
-  img = mpimg.imread(f'{img_name}png')
+  G.draw(img_name)
 
 
-  fig, ax = plt.subplots(1, 1)
-  fig.patch.set_facecolor('black')
-  plt.gca().set_position([0.025, 0.025, 0.95, 0.95])
-  ax.autoscale(enable=True, axis="both", tight=False)
-  ax.axis("off")
-  set_size(fig, (12, 10))
-  plt.imshow(img)
-  plt.show()
+  if show:
+    img = mpimg.imread(img_name)
 
-  # fopen(f'{img_name}png')
+    fig, ax = plt.subplots(1, 1)
+    fig.patch.set_facecolor('gray')
+    plt.gca().set_position([0, 0, 1, 1])
+    ax.autoscale(enable=True, axis="both", tight=False)
+    ax.axis("off")
+    if 'size' in G.graph_attr:
+      size_str = G.graph_attr['size']
+      size_str = size_str[:-1] if size_str[-1] == '!' else size_str
+      size = (float(x) for x in size_str.split(','))
+      set_size(fig, size)
+    plt.imshow(img)
+    plt.show()
+

@@ -7,16 +7,22 @@ def __gen_paths(paths):
     for _, v in paths.items(): 
       if not os.path.isdir(v): os.makedirs(v)
 
-def __create_session():
-  save_to_json(_SESSION_DIR, 'session.json', {})
+
+def __os_path():
+  if platform.system() == 'Windows':
+    path = R'C:\Users\$USERNAME\Documents\collatzpy'
+  else:
+    path = '~/Documents/collatzpy'
+    
+  return os.path.expanduser(path)
 
 def fpaths(dir=None, reset=False):
   session_dat = load_json(_SESSION_DIR, 'session.json')
 
   if not session_dat:
-    __create_session()
+    save_to_json(_SESSION_DIR, 'session.json', {})
 
-  if session_dat and reset:
+  if reset:
     try:
       del session_dat['paths']
     except KeyError:
@@ -27,15 +33,7 @@ def fpaths(dir=None, reset=False):
     __gen_paths(paths)
     return paths
 
-
-  if dir:
-    root_path = dir
-  else:
-    if platform.system() == 'Windows':
-      path = R'C:\Users\$USERNAME\Documents\collatzpy'
-    else:
-      path = '~/Documents/collatzpy'
-    root_path = os.path.expanduser(path)
+  root_path = dir or __os_path()
 
   paths = {'root': root_path,
           'imgs': f'{root_path}/images',
@@ -44,7 +42,7 @@ def fpaths(dir=None, reset=False):
 
   __gen_paths(paths)
 
-  if 'paths' in session_dat and not paths == session_dat['paths']:
+  if not 'paths' in session_dat or not paths == session_dat['paths']:
     save_to_json( _SESSION_DIR, 'session.json', {'paths': paths})
 
   return paths

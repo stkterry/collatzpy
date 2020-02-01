@@ -29,7 +29,7 @@ class CollatzTree:
             'next': node.next.n}
 
   def calc_next(self, n):
-    return (n // 2) if (n % 2 == 0) else (3 * n + 1)
+    return (3 * n + 1) if (n % 2) else (n // 2)
 
   def __add_node(self, n):
     node = CNode(n)
@@ -38,9 +38,9 @@ class CollatzTree:
 
   def collect(self, n):
     if self.has(n): return
-
+    sn = n
+    seq = 1
     node = self.__add_node(n)
-    new_nodes = [node]
 
     while True:
       n = self.calc_next(n)
@@ -49,42 +49,20 @@ class CollatzTree:
         node.next = self(n)
 
         seq_len = node.next.seq_len
-        l = len(new_nodes)
-        for i, new_node in enumerate(new_nodes):
-          new_node.seq_len += seq_len + l - i
-        
-        if new_nodes[0].seq_len >= self.__best_node.seq_len:
-          self.__best_node = new_nodes[0]
+        node = self(sn)
+        while seq > 0:
+          node.seq_len = seq_len + seq
+          node = node.next
+          seq -= 1
+
+        if self(sn).seq_len >= self.__best_node.seq_len:
+          self.__best_node = self(sn)
         break
 
       node.next = self.__add_node(n)
       node = node.next
-      new_nodes.append(node)
+      seq += 1
 
-  def collect2(self, n):
-    if self.has(n): return
-
-    node = self.__add_node(n)
-    new_nodes = [node]
-
-    while True:
-      n = self.calc_next(n)
-
-      if self.has(n):
-        node.next = self(n)
-
-        seq_len = node.next.seq_len
-        l = len(new_nodes)
-        for i, new_node in enumerate(new_nodes):
-          new_node.seq_len += seq_len + l - i
-        
-        if new_nodes[0].seq_len >= self.__best_node.seq_len:
-          self.__best_node = new_nodes[0]
-        break
-
-      node.next = self.__add_node(n)
-      node = node.next
-      new_nodes.append(node)
 
   def collect_from_range(self, a, b):
     a = 2 if a < 2 else a
@@ -105,6 +83,7 @@ class CollatzTree:
       if not node: break
     
     return path
+
 
   def longest_seq(self):
     n = None
