@@ -37,33 +37,6 @@ class CollatzTree(dict):
     return node
 
   def collect(self, n):
-    if self.has(n): return
-    sn = n
-    seq = 1
-    node = self.__add_node(n)
-
-    while True:
-      n = self.calc_next(n)
-
-      if self.has(n):
-        node.next = self(n)
-
-        seq_len = node.next.seq_len
-        node = self(sn)
-        while seq > 0:
-          node.seq_len = seq_len + seq
-          node = node.next
-          seq -= 1
-
-        if self(sn).seq_len >= self.__best_node.seq_len:
-          self.__best_node = self(sn)
-        break
-
-      node.next = self.__add_node(n)
-      node = node.next
-      seq += 1
-
-  def collect2(self, n):
     if n in self: return
 
     sn = n
@@ -77,7 +50,7 @@ class CollatzTree(dict):
         node.next = self[n]
 
         seq_len = node.next.seq_len
-        node = self[n]
+        node = self[sn]
         while seq > 0:
           node.seq_len = seq_len + seq
           node = node.next
@@ -97,10 +70,6 @@ class CollatzTree(dict):
     for n in range(a, b+1): self.collect(n)
   
   def collect_from_list(self, nlist):
-    nlist = [n for n in nlist if n > 1]
-    for n in nlist: self.collect(n)
-
-  def collect_from_list2(self, nlist):
     nlist = [n for n in nlist if n > 1]
     for n in nlist: self.collect(n)
 
