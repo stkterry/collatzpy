@@ -85,6 +85,8 @@ class CollatzTree(dict):
     
     return path
 
+  def filter(self, fn):
+    return filter(fn, self.items())
 
   def longest_seq(self):
     n = None
