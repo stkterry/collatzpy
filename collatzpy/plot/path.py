@@ -1,14 +1,17 @@
-from typing import TypeVar, List, Dict
-CollatzTree = TypeVar('CollatzTree')
+from typing import TypeVar, List
 
 from matplotlib import pyplot as plt
 
 from collatzpy.config import _MPL_STYLES_DIR
 from .helpers import auto_name
+
+CollatzTree = TypeVar('CollatzTree')
+
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/path.mplstyle'
 
 
-def path(tree:CollatzTree, n:int, save:bool=False, output_name:str=None):
+def path(tree: CollatzTree, n: int, save: bool = False,
+         output_name: str = None):
   """Plots the collatz sequence of n --> 1.
 
   Args:
@@ -18,7 +21,7 @@ def path(tree:CollatzTree, n:int, save:bool=False, output_name:str=None):
       of your plot.  If you don't pass an output_name,
       a name will be generated automatically based on the
       local date/time and saved to the current working directory.
-    output_name: The path/name of the image file you want to 
+    output_name: The path/name of the image file you want to
       save.  If you pass an output_name it will save
       without or without passing a save arg as well.
   """
@@ -28,7 +31,7 @@ def path(tree:CollatzTree, n:int, save:bool=False, output_name:str=None):
 
   path = tree.path(n)
   seq_len = tree(n).seq_len
-  pathIdx = [x for x in range(0, seq_len+1)]
+  pathIdx = [x for x in range(0, seq_len + 1)]
 
   plt.plot(pathIdx, path)
   plt.fill_between(pathIdx, path, alpha=0.2)
@@ -47,10 +50,10 @@ def path(tree:CollatzTree, n:int, save:bool=False, output_name:str=None):
   plt.show()
 
 
-def paths(tree:CollatzTree, selection:List[int],
-          save:bool=False, output_name:str=None):
+def paths(tree: CollatzTree, selection: List[int],
+          save: bool = False, output_name: str = None):
   """Plots the collatz sequence of n --> 1 for each n given.
-  
+
   Paths are reverse-aligned to better demonstrate
   sequence overlap.  There's no limit on the size of the
   collection, but it's best to keep it short, as the
@@ -64,7 +67,7 @@ def paths(tree:CollatzTree, selection:List[int],
       of your plot.  If you don't pass an output_name,
       a name will be generated automatically based on the
       local date/time and saved to the current working directory.
-    output_name: The path/name of the image file you want to 
+    output_name: The path/name of the image file you want to
       save.  If you pass an output_name it will save
       without or without passing a save arg as well.
   """

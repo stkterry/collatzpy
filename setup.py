@@ -4,18 +4,6 @@
 
 
 from setuptools import setup, find_packages
-# from setuptools.command.install import install
-# import os, platform
-
-# def __get_fpath():
-#     if platform.system() == 'Windows':
-#         path = R'C:\Users\$USERNAME\Documents\collatzpy'
-#     else:
-#         path = '~/Documents/collatzpy'
-
-#     return os.path.expanduser(path)
-
-
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -27,12 +15,12 @@ requirements = [
     'Click>=7.0',
     'numpy',
     'matplotlib',
-    'pygraphviz'
-    ]
+    'pygraphviz',
+    'dill']
 
-setup_requirements = [ ]
+setup_requirements = []
 
-test_requirements = [ ]
+test_requirements = []
 
 setup(
     author="Steven K Terry",

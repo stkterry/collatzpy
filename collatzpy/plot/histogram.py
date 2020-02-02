@@ -1,17 +1,19 @@
-from typing import TypeVar, List, Dict
-CollatzTree = TypeVar('CollatzTree')
+from typing import TypeVar, List
 
-from matplotlib import pyplot as plt, mlab, cm
+from matplotlib import pyplot as plt
 
 from collatzpy.config import _MPL_STYLES_DIR
 from .helpers import auto_name, seqs
+
+CollatzTree = TypeVar('CollatzTree')
+
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/scatter.mplstyle'
 
 
-def histogram(tree:CollatzTree, selection:list=None,
-              save:bool=False, output_name:str=None):
+def histogram(tree: CollatzTree, selection: List[int] = None,
+              save: bool = False, output_name: str = None):
   """Plots a histogram of the given tree's sequence lengths.
-  
+
   The histogram consists of taking each n in the given
   selection and tabulating the frequency/count of the sequence
   lengths.
@@ -25,7 +27,7 @@ def histogram(tree:CollatzTree, selection:list=None,
       of your plot.  If you don't pass an output_name,
       a name will be generated automatically based on the
       local date/time and saved to the current working directory.
-    output_name: The path/name of the image file you want to 
+    output_name: The path/name of the image file you want to
       save.  If you pass an output_name it will save
       without or without passing a save arg as well.
   """
@@ -35,7 +37,7 @@ def histogram(tree:CollatzTree, selection:list=None,
   seq_count = seqs.seq_hist(seq_lens)
 
   x, y = [], []
-  for seq_len, cnt in sorted(seq_count.items(), key = lambda j: j[0]):
+  for seq_len, cnt in sorted(seq_count.items(), key=lambda j: j[0]):
     x.append(seq_len)
     y.append(cnt)
 
@@ -55,4 +57,3 @@ def histogram(tree:CollatzTree, selection:list=None,
       plt.savefig(output_name, bbox_inches="tight")
 
   plt.show()
-

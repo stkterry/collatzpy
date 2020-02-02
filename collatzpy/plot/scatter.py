@@ -1,5 +1,4 @@
-from typing import TypeVar, List, Dict
-CollatzTree = TypeVar('CollatzTree')
+from typing import TypeVar, List
 
 from matplotlib import pyplot as plt, cm
 from matplotlib.lines import Line2D
@@ -7,12 +6,16 @@ from matplotlib.lines import Line2D
 from collatzpy.config import _MPL_STYLES_DIR
 from .helpers import auto_name, seqs
 from .helpers.colormaps import parula as cm_parula
+
+CollatzTree = TypeVar('CollatzTree')
+
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/scatter.mplstyle'
 
 
-def scatter_heat(tree:CollatzTree, selection=None, save=False, output_name=None):
+def scatter_heat(tree: CollatzTree, selection: List[int] = None,
+                 save: bool = False, output_name: str = None):
   """A 'total stopping time' plot with heatmap.
-  
+
   Uses the sequence length frequency for heat projection.
   X-axis/Y-axis is collatz number / sequence length. Leaving
   selection blank will default to using all terminal nodes.
@@ -26,7 +29,7 @@ def scatter_heat(tree:CollatzTree, selection=None, save=False, output_name=None)
       of your plot.  If you don't pass an output_name,
       a name will be generated automatically based on the
       local date/time and saved to the current working directory.
-    output_name: The path/name of the image file you want to 
+    output_name: The path/name of the image file you want to
       save.  If you pass an output_name it will save
       without or without passing a save arg as well.
   """
@@ -37,7 +40,7 @@ def scatter_heat(tree:CollatzTree, selection=None, save=False, output_name=None)
 
   max_count = max(seq_count.values())
   min_count = min(seq_count.values())
-  
+
   colors = [seq_count[seq_len] for seq_len in seq_lens]
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
@@ -47,7 +50,7 @@ def scatter_heat(tree:CollatzTree, selection=None, save=False, output_name=None)
     plt.colorbar(ax=ax, label="Frequency", pad=0.05)
     plt.clim(min_count, max_count)
     ax.grid(which="minor", linestyle="--", color='#f2f2f2')
-    plt.xlim([0, len(selection)+10])
+    plt.xlim([0, len(selection) + 10])
     plt.ylim(bottom=2)
     plt.xlabel("Collatz number")
     plt.ylabel("Sequence Length")
@@ -63,7 +66,7 @@ def scatter_heat(tree:CollatzTree, selection=None, save=False, output_name=None)
 
 def scatter_tst(tree, selection=None, save=False, output_name=None):
   """A 'total stopping time' plot with even/odd delineation.
-  
+
   X-axis/Y-axis is collatz number / sequence length. Leaving
   selection blank will default to using all terminal nodes.
 
@@ -76,7 +79,7 @@ def scatter_tst(tree, selection=None, save=False, output_name=None):
       of your plot.  If you don't pass an output_name,
       a name will be generated automatically based on the
       local date/time and saved to the current working directory.
-    output_name: The path/name of the image file you want to 
+    output_name: The path/name of the image file you want to
       save.  If you pass an output_name it will save
       without or without passing a save arg as well.
   """
@@ -91,10 +94,10 @@ def scatter_tst(tree, selection=None, save=False, output_name=None):
   with plt.style.context(PATH_STYLE, 'ggplot'):
 
     legend = [
-      Line2D([0], [0], markerfacecolor=cmap(0.0), marker='o', markersize=10,
-             markeredgecolor='none', color='none', lw=4, label='Even'),
-      Line2D([0], [0], markerfacecolor=cmap(1.0), marker='o', markersize=10,
-             markeredgecolor='none', color='none', lw=4, label='Odd')
+        Line2D([0], [0], markerfacecolor=cmap(0.0), marker='o', markersize=10,
+               markeredgecolor='none', color='none', lw=4, label='Even'),
+        Line2D([0], [0], markerfacecolor=cmap(1.0), marker='o', markersize=10,
+               markeredgecolor='none', color='none', lw=4, label='Odd')
     ]
 
     _, ax = plt.subplots()
@@ -102,7 +105,7 @@ def scatter_tst(tree, selection=None, save=False, output_name=None):
     plt.scatter(selection, seq_lens, c=colors)
     ax.legend(handles=legend)
     ax.grid(which="minor", linestyle="--", color='#f2f2f2')
-    plt.xlim([0, len(selection)+1])
+    plt.xlim([0, len(selection) + 1])
     plt.ylim(bottom=2)
     plt.xlabel("Collatz number")
     plt.ylabel("Sequence Length")
@@ -117,7 +120,7 @@ def scatter_tst(tree, selection=None, save=False, output_name=None):
 
 def hexbin(tree, selection=None, save=False, output_name=None):
   """A 'total stopping time' heatmap using a hexbin.
-  
+
   Uses the sequence length frequency for heat projection.
   X-axis/Y-axis is collatz number / sequence length. Leaving
   selection blank will default to using all terminal nodes.
@@ -131,7 +134,7 @@ def hexbin(tree, selection=None, save=False, output_name=None):
       of your plot.  If you don't pass an output_name,
       a name will be generated automatically based on the
       local date/time and saved to the current working directory.
-    output_name: The path/name of the image file you want to 
+    output_name: The path/name of the image file you want to
       save.  If you pass an output_name it will save
       without or without passing a save arg as well.
   """
@@ -151,7 +154,7 @@ def hexbin(tree, selection=None, save=False, output_name=None):
     plt.hexbin(selection, seq_lens, C=colors, gridsize=50, cmap=cm_parula)
     plt.clim(min_count, max_count)
     ax.grid(False, which="both")
-    plt.xlim([0, len(selection)+10])
+    plt.xlim([0, len(selection) + 10])
     plt.ylim(bottom=2)
     plt.colorbar(ax=ax, label="Frequency", pad=0.05)
     plt.xlabel("Collatz number")
