@@ -3,12 +3,19 @@ from matplotlib.collections import LineCollection as LC
 import numpy as np
 from random import uniform
 
-from .plot_helpers import set_size, auto_name
+from .helpers import set_size, auto_name
 
-def angle_path(tree, selection, alpha=0.3, beta=0.38, gamma=1.08,
+def angle_path(tree, selection=None, alpha=0.3, beta=0.38, gamma=1.08,
                sigma=1.3, cmName='plasma_r', cmR=(0, 1), pointed=False,
                save=False, dpi=100, facecolor='black',
                output_name=None, pxw=2560, pxh=1440):
+  """Plots a path using even/odd parity for each step in a sequence.
+  
+  For each sequence n -> 1, traces a path turning left/right each 
+  step k, determined by whether k is even/odd.
+  """
+
+  selection = selection or tree.terminals()
 
   cmap = cm.get_cmap(cmName)
   nMax = max(selection)

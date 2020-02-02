@@ -1,11 +1,12 @@
 from matplotlib import pyplot as plt
 
 from collatzpy.config import _MPL_STYLES_DIR
-from .plot_helpers import auto_name
+from .helpers import auto_name
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/path.mplstyle'
 
 
 def path(tree, n, save=False, output_name=None):
+  """Plots the collatz sequence of n --> 1."""
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
     _, ax = plt.subplots()
@@ -31,7 +32,12 @@ def path(tree, n, save=False, output_name=None):
   plt.show()
 
 
-def path_from_list(tree, n_list, save=False, output_name=None):
+def paths(tree, n_list, save=False, output_name=None):
+  """Plots the collatz sequence of n --> 1 for each n given.
+  
+  Paths are reverse-aligned to better demonstrate
+  sequence overlap.
+  """
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
     _, ax = plt.subplots()

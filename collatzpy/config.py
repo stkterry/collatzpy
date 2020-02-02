@@ -1,3 +1,5 @@
+""" Config file for commonly used directories in the package."""
+
 import os, sys
 
 _ROOT = os.path.dirname(os.path.realpath(__file__))

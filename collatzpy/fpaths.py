@@ -3,12 +3,19 @@ import os, platform
 from collatzpy.config import _SESSION_DIR
 from collatzpy.helpers import load_json, save_to_json
 
-def __gen_paths(paths):
-    for _, v in paths.items(): 
-      if not os.path.isdir(v): os.makedirs(v)
+def __gen_paths(paths:dict) -> None:
+  """Makes directories in the locations provided by paths.
+  
+  Will skip pre-existing directories.
+  """
+
+  for _, v in paths.items(): 
+    if not os.path.isdir(v): os.makedirs(v)
 
 
-def __os_path():
+def __os_path() -> str:
+  """Returns a path str to a default directory based on the user's OS."""
+
   if platform.system() == 'Windows':
     path = R'C:\Users\$USERNAME\Documents\collatzpy'
   else:
@@ -16,7 +23,17 @@ def __os_path():
     
   return os.path.expanduser(path)
 
-def fpaths(dir=None, reset=False):
+def fpaths(dir:str=None, reset:bool=False) -> dict:
+  """Generates default directories for user data made using this lib.
+  
+  Adds generated directories to a session.json file with the package itself.
+  After first run, will use this json for all future calls to fpaths.  
+  Passing a dir will set the default paths to that location instead.  
+  Passing reset will reset to default directories.  fpaths will never 
+  remove any created directories or data.
+  """
+
+
   session_dat = load_json(_SESSION_DIR, 'session.json')
 
   if not session_dat:

@@ -6,12 +6,18 @@ from math import floor
 from collatzpy.config import  _GRAPHVIZ_STYLES_DIR
 from collatzpy.helpers import load_json
 
-from .plot_helpers import auto_name, HexColorMap, fopen, set_size
+from .helpers import auto_name, HexColorMap, set_size
 attrs = load_json(_GRAPHVIZ_STYLES_DIR, 'default.json') 
 
 
-def node_graph(tree, n_list, img_name=None, dot_name=None, write_dot=False, 
+def node_graph(tree, n_list, save=False, img_name=None, dot_name=None, write_dot=False, 
                prog='dot', show=True, graph_attr=None):
+  """Generates a dot tree graph.
+  
+  Uses graphviz and pygraphviz.  By default images are shown through xlib.
+  
+  """
+
   max_seq = tree.best()['seq_len']
 
   G = pgv.AGraph()
@@ -27,7 +33,7 @@ def node_graph(tree, n_list, img_name=None, dot_name=None, write_dot=False,
   edges = []
 
   for nn in n_list:
-    node = tree(nn)
+    node = tree[nn]
     while True:
       n = node.n
       if n in seen:
@@ -44,27 +50,31 @@ def node_graph(tree, n_list, img_name=None, dot_name=None, write_dot=False,
   G.layout(prog=prog)
 
   img_name = img_name or auto_name('png')
-  
+
+  if save:
+    G.draw(img_name)
+
   if write_dot or dot_name:
     dot_name = dot_name or f'{img_name[:-4]}.dot'
     G.write(dot_name)
-
-  G.draw(img_name)
-
-
+      
   if show:
-    img = mpimg.imread(img_name)
+    G.draw('temp.xlib')
 
-    fig, ax = plt.subplots(1, 1)
-    fig.patch.set_facecolor('gray')
-    plt.gca().set_position([0, 0, 1, 1])
-    ax.autoscale(enable=True, axis="both", tight=False)
-    ax.axis("off")
-    if 'size' in G.graph_attr:
-      size_str = G.graph_attr['size']
-      size_str = size_str[:-1] if size_str[-1] == '!' else size_str
-      size = (float(x) for x in size_str.split(','))
-      set_size(fig, size)
-    plt.imshow(img)
-    plt.show()
+
+  # if show:
+  #   img = mpimg.imread(img_name)
+
+  #   fig, ax = plt.subplots(1, 1)
+  #   fig.patch.set_facecolor('gray')
+  #   plt.gca().set_position([0, 0, 1, 1])
+  #   ax.autoscale(enable=True, axis="both", tight=False)
+  #   ax.axis("off")
+  #   if 'size' in G.graph_attr:
+  #     size_str = G.graph_attr['size']
+  #     size_str = size_str[:-1] if size_str[-1] == '!' else size_str
+  #     size = (float(x) for x in size_str.split(','))
+  #     set_size(fig, size)
+  #   plt.imshow(img)
+  #   plt.show()
 

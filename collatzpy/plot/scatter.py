@@ -1,63 +1,62 @@
-from matplotlib import pyplot as plt, mlab, cm
+from matplotlib import pyplot as plt, cm
 from matplotlib.lines import Line2D
 
 from collatzpy.config import _MPL_STYLES_DIR
-from .plot_helpers import auto_name
-from .plot_helpers.colormaps import parula as cm_parula
+from .helpers import auto_name, seqs
+from .helpers.colormaps import parula as cm_parula
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/scatter.mplstyle'
 
 
-def scatter_heat(tree, rng, save=False, output_name=None):
+def scatter_heat(tree, selection=None, save=False, output_name=None):
+  """A 'total stopping time' plot with heatmap.
+  
+  Uses the sequence length frequency for heat projection.
+  X-axis/Y-axis is collatz number / sequence length. Leaving
+  selection blank will default to using all terminal nodes.
+  """
 
-  x, y = [], []
-  for n, node in tree.filter(lambda j: j[0] > rng[0] and j[0] < rng[1]):
-    x.append(n)
-    y.append(node.seq_len)
+  selection = selection or tree.terminals()
+  seq_lens = seqs.seq_lens(tree, selection)
+  seq_count = seqs.seq_hist(seq_lens)
 
-  seq_count = {}
-  for slen in y:
-    if slen in seq_count: seq_count[slen] += 1
-    else : seq_count[slen] = 0
   max_count = max(seq_count.values())
   min_count = min(seq_count.values())
   
-  colors = [seq_count[slen] for slen in y]
-
+  colors = [seq_count[seq_len] for seq_len in seq_lens]
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
 
     _, ax = plt.subplots(1, 1)
-    plt.scatter(x, y, c=colors, cmap=cm_parula)
+    plt.scatter(selection, seq_lens, c=colors, cmap=cm_parula)
     plt.colorbar(ax=ax, label="Frequency", pad=0.05)
     plt.clim(min_count, max_count)
     ax.grid(which="minor", linestyle="--", color='#f2f2f2')
-    plt.xlim([0, len(x)+10])
+    plt.xlim([0, len(selection)+10])
     plt.ylim(bottom=2)
     plt.xlabel("Collatz number")
     plt.ylabel("Sequence Length")
     plt.title("Total Stopping Time")
+    plt.subplots_adjust(right=1, left=0.1)
 
   if save or output_name:
     output_name = output_name or auto_name('png')
     plt.savefig(output_name, bbox_inches="tight")
 
-  plt.subplots_adjust(right=1, left=0.1)
-
-  plt.margins()
   plt.show()
 
-
-def scatter_tst(tree, rng, save=False, output_name=None):
+def scatter_tst(tree, selection=None, save=False, output_name=None):
+  """A 'total stopping time' plot with even/odd delineation.
   
+  X-axis/Y-axis is collatz number / sequence length. Leaving
+  selection blank will default to using all terminal nodes.
+  """
+
   cmap = cm.get_cmap('coolwarm')
 
-  x, y = [], []
-  for n, node in tree.filter(lambda j: j[0] > rng[0] and j[0] < rng[1]):
-    x.append(n)
-    y.append(node.seq_len)
+  selection = selection or tree.terminals()
+  seq_lens = seqs.seq_lens(tree, selection)
 
-  colors = [cmap(1.0) if n % 2 else cmap(0.0) for n in x]
-  # sizes = [15*(seq_count[slen]/max_count)**2 + 3 for slen in y]
+  colors = [cmap(1.0) if n % 2 else cmap(0.0) for n in selection]
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
 
@@ -70,10 +69,10 @@ def scatter_tst(tree, rng, save=False, output_name=None):
 
     _, ax = plt.subplots()
 
-    plt.scatter(x, y, c=colors)
+    plt.scatter(selection, seq_lens, c=colors)
     ax.legend(handles=legend)
     ax.grid(which="minor", linestyle="--", color='#f2f2f2')
-    plt.xlim([0, len(x)+1])
+    plt.xlim([0, len(selection)+1])
     plt.ylim(bottom=2)
     plt.xlabel("Collatz number")
     plt.ylabel("Sequence Length")
@@ -86,42 +85,39 @@ def scatter_tst(tree, rng, save=False, output_name=None):
   plt.show()
 
 
-def hexbin(tree, rng, save=False, output_name=None):
+def hexbin(tree, selection=None, save=False, output_name=None):
+  """A 'total stopping time' heatmap using a hexbin.
+  
+  Uses the sequence length frequency for heat projection.
+  X-axis/Y-axis is collatz number / sequence length. Leaving
+  selection blank will default to using all terminal nodes.
+  """
 
-  x, y = [], []
-  for n, node in tree.filter(lambda j: j[0] > rng[0] and j[0] < rng[1]):
-    x.append(n)
-    y.append(node.seq_len)
+  selection = selection or tree.terminals()
+  seq_lens = seqs.seq_lens(tree, selection)
+  seq_count = seqs.seq_hist(seq_lens)
 
-  seq_count = {}
-  for slen in y:
-    if slen in seq_count:
-      seq_count[slen] += 1
-    else:
-      seq_count[slen] = 1
   max_count = max(seq_count.values())
   min_count = min(seq_count.values())
 
-  colors = [seq_count[slen] for slen in y]
+  colors = [seq_count[slen] for slen in seq_lens]
 
   with plt.style.context(PATH_STYLE, 'ggplot'):
 
     _, ax = plt.subplots(1, 1)
-    plt.hexbin(x, y, C=colors, gridsize=50, cmap=cm_parula)
+    plt.hexbin(selection, seq_lens, C=colors, gridsize=50, cmap=cm_parula)
     plt.clim(min_count, max_count)
     ax.grid(False, which="both")
-    plt.xlim([0, len(x)+10])
+    plt.xlim([0, len(selection)+10])
     plt.ylim(bottom=2)
     plt.colorbar(ax=ax, label="Frequency", pad=0.05)
     plt.xlabel("Collatz number")
     plt.ylabel("Sequence Length")
-    plt.title("Frequency Heatmap")
+    plt.title("Frequency Hexbin Heatmap")
+    plt.subplots_adjust(right=1, left=0.1)
 
-  if save or output_name:
-    output_name = output_name or auto_name('png')
-    plt.savefig(output_name, bbox_inches="tight")
+    if save or output_name:
+      output_name = output_name or auto_name('png')
+      plt.savefig(output_name, bbox_inches="tight")
 
-  plt.subplots_adjust(right=1, left=0.1)
-
-  plt.margins()
   plt.show()

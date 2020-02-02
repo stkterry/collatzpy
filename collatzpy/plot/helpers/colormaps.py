@@ -1,6 +1,6 @@
 from matplotlib.colors import LinearSegmentedColormap
 
-parula_data = [[0.2422, 0.1504, 0.6603],
+_PARULA_DATA = [[0.2422, 0.1504, 0.6603],
            [0.2444, 0.1534, 0.6728],
            [0.2464, 0.1569, 0.6847],
            [0.2484, 0.1607, 0.6961],
@@ -258,4 +258,5 @@ parula_data = [[0.2422, 0.1504, 0.6603],
            [0.9769, 0.9839, 0.0805]]
 
 
-parula = LinearSegmentedColormap.from_list('parula', parula_data)
+# Custom Color map...
+parula = LinearSegmentedColormap.from_list('parula', _PARULA_DATA)
