@@ -1,3 +1,6 @@
+from typing import TypeVar, List, Dict
+CollatzTree = TypeVar('CollatzTree')
+
 from matplotlib import pyplot as plt, cm
 from matplotlib.collections import LineCollection as LC
 import numpy as np
@@ -5,14 +8,45 @@ from random import uniform
 
 from .helpers import set_size, auto_name
 
-def angle_path(tree, selection=None, alpha=0.3, beta=0.38, gamma=1.08,
-               sigma=1.3, cmName='plasma_r', cmR=(0, 1), pointed=False,
-               save=False, dpi=100, facecolor='black',
-               output_name=None, pxw=2560, pxh=1440):
+def angle_path(tree:CollatzTree, selection:List[int]=None, 
+               alpha:float=0.3, beta:float=0.38, gamma:float=1.08,
+               sigma:float=1.3, cmName:str='plasma_r', cmR:tuple=(0, 1),
+               pointed:bool=False, save:bool=False, dpi:int=100, 
+               facecolor:str='black',output_name:str=None, 
+               pxw:int=2560, pxh:int=1440):
   """Plots a path using even/odd parity for each step in a sequence.
   
   For each sequence n -> 1, traces a path turning left/right each 
   step k, determined by whether k is even/odd.
+
+  Args:
+    tree: An instance of the CollatzTree.
+    selection: A list of collatz numbers you want to plot.
+      If no selection is passed, all terminal nodes in the
+      tree will be used.
+    save: Boolean, set to true if you want to save an image
+      of your plot.  If you don't pass an output_name,
+      a name will be generated automatically based on the
+      local date/time and saved to the current working directory.
+    output_name: The path/name of the image file you want to 
+      save.  If you pass an output_name it will save
+      without or without passing a save arg as well.
+    alpha: Affects maximum rotation per step.
+    beta: Works with gamma to set the left/right turn ratio.
+    gamma: Works with beta to set the left/right turn ratio.
+    sigma: Affects the length of each successive step.  Values
+      larger than 1 will increasingly lower the maximum bounded
+      length of the path.
+    cmName: The color map used in the resultant image.  Accepts
+      any string recognized by matplotlib's cm library.
+    cmR: Sets the range of colors to use in the color map.
+    pointed: If true, each path will slowly taper to a point.
+      Drawbacks are longer draw times and potentially visibly
+      segmented lines.
+    facecolor: The background color for the image.
+    dpi: Dots per inch of the saved image.
+    pxw: Width of the image in pixels.
+    pxh: Height of the image in pixels.
   """
 
   selection = selection or tree.terminals()

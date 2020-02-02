@@ -1,3 +1,6 @@
+from typing import TypeVar, List, Dict
+CollatzTree = TypeVar('CollatzTree')
+
 from matplotlib import pyplot as plt, cm
 from matplotlib.lines import Line2D
 
@@ -7,12 +10,25 @@ from .helpers.colormaps import parula as cm_parula
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/scatter.mplstyle'
 
 
-def scatter_heat(tree, selection=None, save=False, output_name=None):
+def scatter_heat(tree:CollatzTree, selection=None, save=False, output_name=None):
   """A 'total stopping time' plot with heatmap.
   
   Uses the sequence length frequency for heat projection.
   X-axis/Y-axis is collatz number / sequence length. Leaving
   selection blank will default to using all terminal nodes.
+
+  Args:
+    tree: An instance of the CollatzTree.
+    selection: A list of collatz numbers you want to plot.
+      If no selection is passed, all terminal nodes in the
+      tree will be used.
+    save: Boolean, set to true if you want to save an image
+      of your plot.  If you don't pass an output_name,
+      a name will be generated automatically based on the
+      local date/time and saved to the current working directory.
+    output_name: The path/name of the image file you want to 
+      save.  If you pass an output_name it will save
+      without or without passing a save arg as well.
   """
 
   selection = selection or tree.terminals()
@@ -44,11 +60,25 @@ def scatter_heat(tree, selection=None, save=False, output_name=None):
 
   plt.show()
 
+
 def scatter_tst(tree, selection=None, save=False, output_name=None):
   """A 'total stopping time' plot with even/odd delineation.
   
   X-axis/Y-axis is collatz number / sequence length. Leaving
   selection blank will default to using all terminal nodes.
+
+  Args:
+    tree: An instance of the CollatzTree.
+    selection: A list of collatz numbers you want to plot.
+      If no selection is passed, all terminal nodes in the
+      tree will be used.
+    save: Boolean, set to true if you want to save an image
+      of your plot.  If you don't pass an output_name,
+      a name will be generated automatically based on the
+      local date/time and saved to the current working directory.
+    output_name: The path/name of the image file you want to 
+      save.  If you pass an output_name it will save
+      without or without passing a save arg as well.
   """
 
   cmap = cm.get_cmap('coolwarm')
@@ -91,6 +121,19 @@ def hexbin(tree, selection=None, save=False, output_name=None):
   Uses the sequence length frequency for heat projection.
   X-axis/Y-axis is collatz number / sequence length. Leaving
   selection blank will default to using all terminal nodes.
+
+  Args:
+    tree: An instance of the CollatzTree.
+    selection: A list of collatz numbers you want to plot.
+      If no selection is passed, all terminal nodes in the
+      tree will be used.
+    save: Boolean, set to true if you want to save an image
+      of your plot.  If you don't pass an output_name,
+      a name will be generated automatically based on the
+      local date/time and saved to the current working directory.
+    output_name: The path/name of the image file you want to 
+      save.  If you pass an output_name it will save
+      without or without passing a save arg as well.
   """
 
   selection = selection or tree.terminals()

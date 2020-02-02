@@ -31,6 +31,22 @@ def fpaths(dir:str=None, reset:bool=False) -> dict:
   Passing a dir will set the default paths to that location instead.  
   Passing reset will reset to default directories.  fpaths will never 
   remove any created directories or data.
+
+  Args:
+    dir: A string pointing to a user directory. Passing this arg sets
+      a session.json file and future calls to this function
+      will return the dir stored to that file.
+    reset: Resets the session.json file to default values. 
+      Alternatively passing a dir arg will update the session.json.
+
+  Returns:
+    A dict of paths for convenient reference when saving files.
+      paths = fpaths(dir='~/my/fav/dir')
+      ...which returns,
+      paths: {"root": "~/my/fav/dir",
+              "imgs": "~/my/fav/dir/images", 
+              "pickles": "~/my/fav/dir/pickles", 
+              "dots": "~/my/fav/dir/dots"}
   """
 
 

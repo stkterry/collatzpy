@@ -10,8 +10,9 @@ from .helpers import auto_name, HexColorMap, set_size
 attrs = load_json(_GRAPHVIZ_STYLES_DIR, 'default.json') 
 
 
-def node_graph(tree, n_list, save=False, img_name=None, dot_name=None, write_dot=False, 
-               prog='dot', show=True, graph_attr=None):
+def node_graph(tree, n_list, save=False, img_name=None, 
+               dot_name=None, write_dot=False, prog='dot', show=True, 
+               graph_attr=None, node_attr=None, edge_attr=None):
   """Generates a dot tree graph.
   
   Uses graphviz and pygraphviz.  By default images are shown through xlib.
@@ -24,7 +25,9 @@ def node_graph(tree, n_list, save=False, img_name=None, dot_name=None, write_dot
   G.graph_attr.update(**attrs['graph_attr'])
   if graph_attr: G.graph_attr.update(**graph_attr)
   G.node_attr.update(**attrs['node_attr'])
+  if node_attr: G.node_attr.update(**node_attr)
   G.edge_attr.update(**attrs['edge_attr'])
+  if edge_attr: G.edge_attr.update(**edge_attr)
 
   cmap = HexColorMap('cool')
 
