@@ -14,7 +14,7 @@ def angle_path(tree: CollatzTree, selection: List[int] = None,
                alpha: float = 0.3, beta: float = 0.38, gamma: float = 1.08,
                sigma: float = 1.3, cmName: str = 'plasma_r',
                cmR: tuple = (0, 1), pointed: bool = False, save: bool = False,
-               dpi: int = 100, pxw: int = 2560, pxh: int = 1440,
+               dpi: int = 100, pxw: int = 1920, pxh: int = 1080,
                facecolor: str = 'black', output_name: str = None):
   """Plots a path using even/odd parity for each step in a sequence.
 

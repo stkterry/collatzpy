@@ -10,8 +10,8 @@ CollatzTree = TypeVar('CollatzTree')
 PATH_STYLE = f'file://{_MPL_STYLES_DIR}/scatter.mplstyle'
 
 
-def histogram(tree: CollatzTree, selection: List[int] = None,
-              save: bool = False, output_name: str = None):
+def hist(tree: CollatzTree, selection: List[int] = None,
+         save: bool = False, output_name: str = None):
   """Plots a histogram of the given tree's sequence lengths.
 
   The histogram consists of taking each n in the given

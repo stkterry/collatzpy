@@ -4,8 +4,11 @@ __author__ = """Steven K Terry"""
 __email__ = 'stkterry@gmail.com'
 __version__ = '0.1.0'
 
-from .fpaths import fpaths
+
 from . import tree
 from . import plot
+from . import cfpaths
 
-__all__ = ['fpaths', 'tree', 'plot']
+fpaths = cfpaths.fpaths
+
+__all__ = ['fpaths', 'cfpaths', 'tree', 'plot']

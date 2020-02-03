@@ -1,7 +1,7 @@
 import os
 import platform
 
-from collatzpy.config import _SESSION_DIR, _SESSION_FILE
+from collatzpy.config import _SESSION_DIR
 from collatzpy.helpers import load_json, save_to_json
 
 
@@ -53,7 +53,7 @@ def fpaths(dir: str = None, reset: bool = False) -> dict:
               "dots": "~/my/fav/dir/dots"}
   """
 
-  if os.path.exists(_SESSION_FILE):
+  if os.path.exists(f'{_SESSION_DIR}/session.json'):
     session_dat = load_json(_SESSION_DIR, 'session.json')
   else:
     save_to_json(_SESSION_DIR, 'session.json', {})

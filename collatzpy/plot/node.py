@@ -11,16 +11,24 @@ attrs = load_json(_GRAPHVIZ_STYLES_DIR, 'default.json')
 
 def node_graph(tree: CollatzTree, selection: List[int] = None,
                save: bool = False, img_name: str = None, dot_name: str = None,
-               prog: str = 'dot', write_dot: bool = False, show: bool = True,
-               graph_attr: dict = None, node_attr: dict = None,
-               edge_attr: dict = None):
+               prog: str = 'dot', write_dot: bool = False, show: bool = False,
+               show_type: str = 'xlib', graph_attr: dict = None,
+               node_attr: dict = None, edge_attr: dict = None):
 
   """Generates a dot tree graph.
 
-  Uses graphviz and pygraphviz.  By default images are shown
-  through xlib.  graph_att, node_attr, and edge_attr will
-  take most graphviz attributes wrapped as a dict and
-  apply them to the graph.
+  Uses Graphviz and Pygraphviz.  Generated graphs are NOT
+  displayed by default. Not all systems natively support
+  the default xlib output for display.  Most Linux users
+  may set `show` to True and have images displayed via X11.
+  Other users may install X11 support or set `show_type`
+  to a Graphviz supported extension that is natively viewable
+  on their machine.  Graphs can still be saved as images in
+  any case and opened via the user's chosen application.
+
+  graph_att, node_attr, and edge_attr will take most
+  Graphviz attributes wrapped as a dict and apply them
+  to the graph.
 
   Args:
     tree: An instance of the CollatzTree class.
@@ -40,7 +48,9 @@ def node_graph(tree: CollatzTree, selection: List[int] = None,
       specified the dot_file will share that name/dir instead.
     dot_name: The dir/name of the output dot file.
     show: If true the function will try and show the image
-      via xlib/x11.
+      via xlib/x11 by default.
+    show_type: Any Graphviz supported extension that can
+      open the generated graph.
     graph_attr: A dict of graphviz compatible attributes
       for the graph.
     node_attr: A dict of graphviz compatible attributes
@@ -86,14 +96,18 @@ def node_graph(tree: CollatzTree, selection: List[int] = None,
 
   G.layout(prog=prog)
 
-  img_name = img_name or auto_name('png')
-
-  if save:
+  if save and not img_name:
+    img_name = auto_name('png')
+    G.draw(img_name)
+  elif img_name:
     G.draw(img_name)
 
-  if write_dot or dot_name:
-    dot_name = dot_name or f'{img_name[:-4]}.dot'
-    G.write(dot_name)
+  if write_dot and not dot_name and not img_name:
+    G.draw(auto_name('dot'))
+  elif write_dot and img_name:
+    G.draw(f'{img_name[:-4]}.dot')
+  elif dot_name:
+    G.draw(dot_name)
 
   if show:
-    G.draw('temp.xlib')
+    G.draw(f'temp.{show_type}')

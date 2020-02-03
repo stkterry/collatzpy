@@ -118,7 +118,8 @@ def scatter_tst(tree, selection=None, save=False, output_name=None):
   plt.show()
 
 
-def hexbin(tree, selection=None, save=False, output_name=None):
+def hexbin(tree, selection=None, gridsize=50,
+           save=False, output_name=None):
   """A 'total stopping time' heatmap using a hexbin.
 
   Uses the sequence length frequency for heat projection.
@@ -151,7 +152,8 @@ def hexbin(tree, selection=None, save=False, output_name=None):
   with plt.style.context(PATH_STYLE, 'ggplot'):
 
     _, ax = plt.subplots(1, 1)
-    plt.hexbin(selection, seq_lens, C=colors, gridsize=50, cmap=cm_parula)
+    plt.hexbin(selection, seq_lens, C=colors, 
+               gridsize=gridsize, cmap=cm_parula)
     plt.clim(min_count, max_count)
     ax.grid(False, which="both")
     plt.xlim([0, len(selection) + 10])

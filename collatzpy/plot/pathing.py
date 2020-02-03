@@ -30,7 +30,7 @@ def path(tree: CollatzTree, n: int, save: bool = False,
     _, ax = plt.subplots()
 
   path = tree.path(n)
-  seq_len = tree(n).seq_len
+  seq_len = tree[n].seq_len
   pathIdx = [x for x in range(0, seq_len + 1)]
 
   plt.plot(pathIdx, path)
@@ -77,7 +77,7 @@ def paths(tree: CollatzTree, selection: List[int],
 
   for n in selection:
     path = tree.path(n)
-    seq_len = tree(n).seq_len
+    seq_len = tree[n].seq_len
     path_idx = [x for x in range(0, seq_len + 1)]
 
     path.reverse()
