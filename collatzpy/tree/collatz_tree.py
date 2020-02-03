@@ -17,6 +17,9 @@ class CollatzTree(dict):
     self[1] = CollatzNode(1)
     self.__best_node = self[1]
 
+
+
+
   def has(self, n: int) -> bool:
     """Returns boolean True/False if n is contained in the tree."""
     return n in self
@@ -27,14 +30,14 @@ class CollatzTree(dict):
       return None
     node = self[n]
     info = {'n': node.n, 'seq_len': node.seq_len,
-            'next': node.next.n}
+            'next': node.next.n, 'is_terminal': node.is_terminal}
     return info
 
   def best(self) -> dict:
     """Returns a dict of attributes for the node with the longest sequence."""
     node = self.__best_node
     return {'n': node.n, 'seq_len': node.seq_len,
-            'next': node.next.n}
+            'next': node.next.n, 'is_terminal': node.is_terminal}
 
   def calc_next(self, n: int) -> int:
     """Given n, returns the next collatz number in the sequence of n"""

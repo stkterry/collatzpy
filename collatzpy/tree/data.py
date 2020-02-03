@@ -3,7 +3,8 @@ import dill
 
 CollatzTree = TypeVar('CollatzTree')
 
-def save_tree(tree:CollatzTree, fpath:str, fname:str) -> None:
+
+def save_tree(tree: CollatzTree, fpath: str, fname: str) -> None:
   """Saves the given tree to the combined path 'fpath/fname'.
 
   Args:
@@ -17,7 +18,7 @@ def save_tree(tree:CollatzTree, fpath:str, fname:str) -> None:
   tree_file.close()
 
 
-def load_tree(fpath:str, fname:str) -> CollatzTree:
+def load_tree(fpath: str, fname: str) -> CollatzTree:
   """Loads a tree from the combined path 'fpath/fname'.
 
 

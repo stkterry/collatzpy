@@ -25,12 +25,12 @@ def set_size(fig, size, dpi=100, eps=1e-2, give_up=2, min_size_px=10):
     actual_width, actual_height = __get_size(fig, dpi=dpi)
     set_width *= target_width / actual_width
     set_height *= target_height / actual_height
-    deltas.append(abs(actual_width - target_width) +
-                  abs(actual_height - target_height))
+    deltas.append(
+        abs(actual_width - target_width) + abs(actual_height - target_height))
     if deltas[-1] < eps:
       return True
-    if (len(deltas) > give_up and 
-        sorted(deltas[-give_up:]) == deltas[-give_up:]):
+    if (len(deltas) > give_up
+            and sorted(deltas[-give_up:]) == deltas[-give_up:]):
       return False
     if set_width * dpi < min_size_px or set_height * dpi < min_size_px:
       return False
