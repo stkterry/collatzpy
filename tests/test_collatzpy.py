@@ -128,15 +128,27 @@ class TestCollatzpyTree(unittest.TestCase):
         tree_copy = ctree.load_tree('', self.TEMP_FILE_LOC)
         self.assertEqual(self.tree, tree_copy)
 
-    def test_command_line_interface(self):
+
+class TestCLI(unittest.TestCase):
+
+    def test_CLI(self):
         """Test the CLI."""
+        print('Does the CLI work?')
         runner = CliRunner()
         result = runner.invoke(cli.main)
         assert result.exit_code == 0
-        assert 'collatzpy.cli.main' in result.output
+        assert 'CollatzPy CLI' in result.output
         help_result = runner.invoke(cli.main, ['--help'])
         assert help_result.exit_code == 0
         assert '--help  Show this message and exit.' in help_result.output
+
+        path_result = runner.invoke(cli.path, '3')
+        assert path_result.exit_code == 0
+        assert '[3, 10, 5, 16, 8, 4, 2, 1]' in path_result.output
+
+        path_result = runner.invoke(cli.path, '3 4 -r')
+        assert path_result.exit_code == 0
+        assert '[3, 10, 5, 16, 8, 4, 2, 1]\n[4, 2, 1]' in path_result.output
 
 
 class TestFpaths(unittest.TestCase):
