@@ -1,5 +1,5 @@
 from itertools import count
-from typing import List, Callable, Iterator
+from typing import List, Dict, Callable, Iterator
 from . import CollatzNode
 
 
@@ -17,8 +17,10 @@ class CollatzTree(dict):
     self[1] = CollatzNode(1)
     self.__best_node = self[1]
 
-
-
+  def __call__(self, n: int) -> Dict[str, int]:
+    """Return the node instance of n."""
+    if n in self:
+      return self[n]
 
   def has(self, n: int) -> bool:
     """Returns boolean True/False if n is contained in the tree."""
@@ -38,10 +40,6 @@ class CollatzTree(dict):
     node = self.__best_node
     return {'n': node.n, 'seq_len': node.seq_len,
             'next': node.next.n, 'is_terminal': node.is_terminal}
-
-  def calc_next(self, n: int) -> int:
-    """Given n, returns the next collatz number in the sequence of n"""
-    return (3 * n + 1) if (n % 2) else (n // 2)
 
   def __add_node(self, n: int):
     node = CollatzNode(n)
@@ -67,7 +65,7 @@ class CollatzTree(dict):
     node.is_terminal = True
 
     while True:
-      n = self.calc_next(n)
+      n = CollatzTree.calc_next(n)
 
       if n in self:
         node.next = self[n]
@@ -147,3 +145,19 @@ class CollatzTree(dict):
     for n, _ in filter(lambda j: j[1].is_terminal, self.items()):
       terminals.append(n)
     return terminals
+
+  @staticmethod
+  def calc_next(n: int) -> int:
+    """Given n, returns the next collatz number in the sequence of n"""
+    return (3 * n + 1) if (n % 2) else (n // 2)
+
+  @staticmethod
+  def qpath(n):
+    if n < 1:
+      return []
+    path = [n]
+    while n != 1:
+      n = CollatzTree.calc_next(n)
+      path.append(n)
+
+    return path

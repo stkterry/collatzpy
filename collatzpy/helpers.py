@@ -17,4 +17,4 @@ def load_json(fpath: str, fname: str) -> dict:
 def save_to_json(fpath: str, fname: str, data: dict) -> None:
   """Saves data to a json located at fpath/fname"""
   with open(f'{fpath}/{fname}', 'w') as f:
-    json.dump(data, f)
+    json.dump(data, f, indent=4, sort_keys=True)

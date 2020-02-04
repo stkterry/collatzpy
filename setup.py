@@ -41,7 +41,7 @@ setup(
     description="Collatz sequence visualization and exploration.",
     entry_points={
         'console_scripts': [
-            'collatzpy=collatzpy.cli:main',
+            'c=collatzpy.cli:main',
         ],
     },
     install_requires=requirements,

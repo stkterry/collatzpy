@@ -64,7 +64,8 @@ def scatter_heat(tree: CollatzTree, selection: List[int] = None,
   plt.show()
 
 
-def scatter_tst(tree, selection=None, save=False, output_name=None):
+def scatter_tst(tree: CollatzTree, selection: List[int] = None,
+                save: bool = False, output_name: str = None):
   """A 'total stopping time' plot with even/odd delineation.
 
   X-axis/Y-axis is collatz number / sequence length. Leaving
@@ -118,8 +119,8 @@ def scatter_tst(tree, selection=None, save=False, output_name=None):
   plt.show()
 
 
-def hexbin(tree, selection=None, gridsize=50,
-           save=False, output_name=None):
+def hexbin(tree: CollatzTree, selection: List[int] = None, gridsize: int = 50,
+           save: bool = False, output_name: str = None):
   """A 'total stopping time' heatmap using a hexbin.
 
   Uses the sequence length frequency for heat projection.
@@ -152,7 +153,7 @@ def hexbin(tree, selection=None, gridsize=50,
   with plt.style.context(PATH_STYLE, 'ggplot'):
 
     _, ax = plt.subplots(1, 1)
-    plt.hexbin(selection, seq_lens, C=colors, 
+    plt.hexbin(selection, seq_lens, C=colors,
                gridsize=gridsize, cmap=cm_parula)
     plt.clim(min_count, max_count)
     ax.grid(False, which="both")
